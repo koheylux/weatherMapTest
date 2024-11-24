@@ -1,11 +1,12 @@
 import SwiftUI
 
+/// 天気情報を表示する View
 struct WeatherView: View {
-    @StateObject private var viewModel = WeatherViewModel()
+    @StateObject private var viewModel = WeatherViewModel() // ViewModelを使用
     
     var body: some View {
         ZStack {
-            // 背景
+            // 背景グラデーション
             LinearGradient(gradient: Gradient(colors: [Color.blue.opacity(0.3), Color.white]),
                            startPoint: .top, endPoint: .bottom)
             .edgesIgnoringSafeArea(.all)
@@ -13,9 +14,21 @@ struct WeatherView: View {
             // コンテンツ
             if let weather = viewModel.weatherData {
                 VStack {
-                    Spacer() // 上部のスペースを埋める
+                    // 現在地取得ボタン
+                    Button(action: {
+                        viewModel.fetchWeatherForCurrentLocation()
+                    }) {
+                        Text("現在地の天気を取得")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.blue)
+                            .cornerRadius(10)
+                    }
                     
-                    // カードスタイルの天気情報表示
+                    Spacer()
+                    
+                    // 天気データをカードで表示
                     WeatherCard(weather: weather)
                         .padding()
                         .background(
@@ -24,14 +37,14 @@ struct WeatherView: View {
                                 .shadow(color: Color.black.opacity(0.2), radius: 10, x: 0, y: 5)
                         )
                     
-                    Spacer() // 下部のスペースを埋める
+                    Spacer()
                 }
                 .padding()
-                .animation(.easeInOut, value: viewModel.weatherData) // データ取得時のアニメーション
             } else {
+                // ローディング表示
                 ProgressView("天気を取得中...")
                     .onAppear {
-                        viewModel.fetchWeather()
+                        viewModel.fetchWeatherForCurrentLocation()
                     }
                     .padding()
             }
@@ -39,19 +52,19 @@ struct WeatherView: View {
     }
 }
 
+/// 天気情報カード
 struct WeatherCard: View {
     var weather: WeatherData
     
     var body: some View {
         VStack {
-            Text("東京, 日本")
+            Text("現在地の天気")
                 .font(.title2)
                 .fontWeight(.bold)
                 .padding(.top, 20)
             
             if let icon = weather.weather.first?.icon {
-                WeatherIconView(icon: icon)
-                    .font(.system(size: 70)) // アイコンサイズ
+                WeatherIconView(icon: icon) // アイコン表示
             }
             
             Text("\(weather.main.temp, specifier: "%.1f")°C")
@@ -76,6 +89,7 @@ struct WeatherCard: View {
     }
 }
 
+/// 天気アイコン表示用ビュー
 struct WeatherIconView: View {
     let icon: String
     

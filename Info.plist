@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plist version="1.0">
+<dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>en</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.example.weatherMapTest</string>
+    <key>CFBundleVersion</key>
+    <string>1</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0</string>
+    <key>CFBundleExecutable</key>
+    <string>$(EXECUTABLE_NAME)</string>
+    
+    <!-- 位置情報の使用許可 -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>このアプリは天気予報を提供するために位置情報を使用します。</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>このアプリは位置情報を使用して天気予報を提供します。</string>
+</dict>
+</plist>
