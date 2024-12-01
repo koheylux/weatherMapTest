@@ -27,7 +27,7 @@ struct WeatherView: View {
 
                 // 天気データを表示
                 if let weather = viewModel.weatherData {
-                    WeatherCard(weather: weather)
+                    WeatherCard(weather: weather, locationName: viewModel.locationName)
                 } else {
                     Text("天気情報がありません")
                         .foregroundColor(.gray)

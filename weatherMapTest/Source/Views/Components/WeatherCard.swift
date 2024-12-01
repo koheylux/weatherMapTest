@@ -3,10 +3,11 @@ import SwiftUI
 /// 天気情報カード
 struct WeatherCard: View {
     var weather: WeatherData
+    var locationName: String?
 
     var body: some View {
         VStack {
-            Text("現在地の天気")
+            Text(locationName ?? "地点名の取得失敗")
                 .font(.title2)
                 .fontWeight(.bold)
 

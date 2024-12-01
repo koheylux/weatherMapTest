@@ -3,7 +3,9 @@ import CoreLocation
 
 /// 天気情報を管理する ViewModel
 class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
-    @Published var weatherData: WeatherData? // 天気データを保持
+    @Published var weatherData: WeatherData?
+    @Published var locationName: String?
+
     private let weatherService = WeatherAPIService() // 天気APIサービス
     private let locationManager = CLLocationManager() // 位置情報マネージャ
     
@@ -39,6 +41,8 @@ class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         locationManager.stopUpdatingLocation()
         // 取得した緯度・経度で天気情報を取得
         fetchWeather(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        // 取得した緯度・経度で地点名を取得
+        fetchLocationName(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
     }
     
     /// 位置情報取得失敗時のハンドリング
@@ -56,6 +60,21 @@ class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
                 case .failure(let error):
                     print("天気データ取得に失敗しました: \(error.localizedDescription)")
                 }
+            }
+        }
+    }
+
+    private func fetchLocationName(latitude: Double, longitude: Double) {
+        let geocoder = CLGeocoder()
+        let location = CLLocation(latitude: latitude, longitude: longitude)
+        geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
+            if let error = error {
+                print("地点名取得に失敗しました: \(error.localizedDescription)")
+                return
+            }
+            
+            if let placemark = placemarks?.first {
+                self?.locationName = placemark.locality ?? placemark.name
             }
         }
     }
