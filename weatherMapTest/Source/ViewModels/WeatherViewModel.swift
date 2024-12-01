@@ -12,22 +12,22 @@ class WeatherViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
         locationManager.delegate = self
     }
     
-    /// 現在地の天気を取得
+    /// 現在地を取得して天気を取得する
     func fetchWeatherForCurrentLocation() {
         // 現在の位置情報利用許可の状態を確認
         let status = locationManager.authorizationStatus
         switch status {
-        case .notDetermined:
-            // 許可がまだリクエストされていない場合、リクエストする
-            locationManager.requestWhenInUseAuthorization()
-        case .authorizedWhenInUse, .authorizedAlways:
-            // 許可済みの場合、位置情報を取得開始
-            locationManager.startUpdatingLocation()
-        case .denied, .restricted:
-            // 拒否された場合のエラーメッセージ
-            print("位置情報の利用が許可されていません。")
-        @unknown default:
-            print("未知の許可状態: \(status.rawValue)")
+            case .notDetermined:
+                // 許可がまだリクエストされていない場合、リクエストする
+                locationManager.requestWhenInUseAuthorization()
+            case .authorizedWhenInUse, .authorizedAlways:
+                // 許可済みの場合、位置情報を取得開始
+                locationManager.startUpdatingLocation()
+            case .denied, .restricted:
+                // 拒否された場合のエラーメッセージ
+                print("位置情報の利用が許可されていません。")
+            @unknown default:
+                print("未知の許可状態: \(status.rawValue)")
         }
     }
     
