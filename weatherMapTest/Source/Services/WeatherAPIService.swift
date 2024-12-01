@@ -7,7 +7,7 @@ class WeatherAPIService {
         guard let path = Bundle.main.path(forResource: "Keys", ofType: "plist"),
             let dictionary = NSDictionary(contentsOfFile: path),
             let key = dictionary["OpenWeatherMapAPIKey"] as? String else {
-            fatalError("APIキーが見つかりません。Keys.plistファイルを確認してください。")
+            fatalError("APIキーが不正です")
         }
         return key
     }
